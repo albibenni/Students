@@ -1,5 +1,6 @@
 package com.albi.SpringBoot.demo.student;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,27 +12,20 @@ import java.util.List;
 @RequestMapping(path = "api/student")
 public class StudentController {
 
+
+    private final StudentService studentService;
+
+    @Autowired
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
     @GetMapping(path = "/student")
     public Student getStudent() {
-        return
-                new Student(
-                        1L,
-                        "Alberto",
-                        "email@gmail.com",
-                        LocalDate.of(1992, 7, 15),
-                        21
-        );
+        return studentService.getStudent();
     }
     @GetMapping(path = "/students")
     public List<Student> getStudents() {
-        return List.of(
-                new Student(
-                        1L,
-                        "Alberto",
-                        "email@gmail.com",
-                        LocalDate.of(1992, 7, 15),
-                        21
-                )
-        );
+        return studentService.getStudents();
     }
 }
