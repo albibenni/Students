@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/student")
@@ -21,8 +21,8 @@ public class StudentController {
     }
 
     @GetMapping(path = "/student")
-    public Student getStudent() {
-        return studentService.getStudent();
+    public Optional<Student> getStudent() {
+        return studentService.getStudent(1L);
     }
     @GetMapping(path = "/students")
     public List<Student> getStudents() {
