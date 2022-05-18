@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -45,7 +46,20 @@ public class StudentService {
     }
 
     @Transactional
-    public void updateStudent(Student student){
+    public void updateStudent(Long studentId, String email, String name) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalStateException("Student with id " + studentId + " does not exist"));
 
+        if (name != null && name.length() > 0 && !Objects.equals(student.getName(), name)) {
+            student.setName(name);
+        }
+
+        if (email != null && email.length() > 0 && !Objects.equals(student.getEmail(), email)) {
+            Optional<Student> studentOptional = studentRepository.findStudentByEmail(email);
+            if (studentOptional.isPresent()) {
+                throw new IllegalStateException("Email taken");
+            }
+            student.setEmail(email);
+        }
     }
 }
